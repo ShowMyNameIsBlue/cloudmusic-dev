@@ -1,14 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'Home',
+    component: () => import('@views/home')
+  },
+  {
+    path: '/sigin',
+    name: 'Sigin',
+    component: () => import('@views/sigin')
+  },
+  {
+    path: '*',
+    name: 'Default',
+    redirect: '/'
   }
 ]
 

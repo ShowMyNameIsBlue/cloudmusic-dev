@@ -1,29 +1,29 @@
 <template>
-  <div id="app">
-    hello world
-    <router-view />
-  </div>
+  <el-container id="app" class="c-container">
+    <el-header class="c-header-container" v-if="headerStatus">
+      <me-navbar title="hello world"></me-navbar>
+    </el-header>
+    <el-main class="c-view-container">
+      <keep-alive> <router-view /></keep-alive>
+    </el-main>
+    <el-footer class="c-footer-container" v-if="footerStatus"></el-footer>
+  </el-container>
 </template>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style></style>
 
-#nav {
-  padding: 30px;
+<script>
+import MeNavbar from '@comp/navbar'
+export default {
+  data() {
+    return {
+      headerStatus: this.$store.getters.headerStatus,
+      footerStatus: this.$store.getters.footerStatus
+    }
+  },
+  name: 'app',
+  components: {
+    MeNavbar
+  }
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>

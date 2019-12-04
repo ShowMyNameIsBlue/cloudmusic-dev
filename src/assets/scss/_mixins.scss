@@ -32,3 +32,16 @@
   white-space: normal !important;
   word-wrap: break-word;
 }
+
+// 切换过渡
+
+@mixin switch($time: 0.3s) {
+  &-enter-active,
+  &-leave-active {
+    transition: all $time;
+  }
+  &-enter,
+  &-leave-to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
