@@ -4,7 +4,7 @@
       <slot name="left" />
     </div>
     <div class="c-navbar-center" v-if="$slots.center">
-      <slot name="cneter" />
+      <slot name="center" />
     </div>
     <div class="c-navbar-right" v-if="$slots.right">
       <slot name="right" />
@@ -30,7 +30,7 @@
       position: static;
     }
   }
-  &-cneter {
+  &-center {
     flex: 1;
     margin: 0 0.25rem;
     ~ .c-navbar-right {
