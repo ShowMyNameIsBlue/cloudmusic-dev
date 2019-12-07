@@ -24,6 +24,7 @@
 <script>
 import MeNavbar from '@comp/navbar'
 import MeWarn from '@comp/warn'
+import { USERNUMBER_WARN } from '../config'
 export default {
   name: 'PStep1',
   components: {
@@ -56,13 +57,13 @@ export default {
       const r = /^1\d{10}$/g
       if (!this.usernumber) return
       if (r.test(this.usernumber)) {
-        this.$emit('next1', 1)
+        this.$emit('next1', { id: 1, usernumber: this.usernumber })
         this.clear()
       } else {
         if (this.usernumber.length === 11) {
-          this.$refs.warn.show(`电话号码格式错误`)
+          this.$refs.warn.show(USERNUMBER_WARN.NUMBER)
         } else {
-          this.$refs.warn.show(`应输入11位的数字`)
+          this.$refs.warn.show(USERNUMBER_WARN.LENGTH)
         }
       }
     },

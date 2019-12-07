@@ -22,7 +22,7 @@
 
 <script>
 import MeWarn from '@comp/warn'
-
+import { LOGIN_WARN } from './config'
 export default {
   name: 'SiginWay',
   data() {
@@ -31,7 +31,7 @@ export default {
     }
   },
   created() {
-    this.content = '请先勾选同意《服务条款》《隐私政策》 《儿童隐私政策》'
+    this.content = LOGIN_WARN
   },
   components: {
     MeWarn

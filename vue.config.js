@@ -9,7 +9,17 @@ module.exports = {
       .set('@api', resolve('src/api'))
       .set('@comp', resolve('src/components'))
       .set('@views', resolve('src/views'))
-
-    // 这里只写了两个个，你可以自己再加，按这种格式.set('', resolve(''))
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://47.94.195.231:3000', // target host
+        ws: true, // proxy websockets
+        changeOrigin: true, // needed for virtual hosted sites
+        pathRewrite: {
+          '^/api': '' // rewrite path
+        }
+      }
+    }
   }
 }

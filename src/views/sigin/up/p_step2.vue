@@ -13,43 +13,56 @@
         >重设密码 <i class="el-icon-arrow-right"></i
       ></router-link>
     </div>
+    <me-warn ref="warn" icon="iconfont icon-cha"></me-warn>
   </div>
 </template>
 
 <script>
 import MeNavbar from '@comp/navbar'
+import { axiosGet } from '@assets/js/query'
+import MeWarn from '@comp/warn'
+import { PASSORD_WARN, ROUTER } from '../config'
 export default {
   name: 'PStep2',
   components: {
-    MeNavbar
+    MeNavbar,
+    MeWarn
   },
   data() {
     return {
       status: false,
-      password: ''
+      password: '',
+      userInfo: {}
     }
   },
   methods: {
     backs() {
-      this.$emit('back2', 2)
+      this.$emit('back2', { id: 2 })
       this.clear()
     },
     next() {
-      const r = /^1\d{10}$/g
       if (!this.password) return
-      if (r.test(this.password)) {
-        this.$emit('isOK_1')
-        this.$router.push('/')
+      if (this.password.length < 6) {
+        this.$refs.warn.show(PASSORD_WARN)
       } else {
-        if (this.password.length === 11) {
-          this.$refs.warn.show(`电话号码格式错误`)
-        } else {
-          this.$refs.warn.show(`应输入11位的数字`)
-        }
+        const { usernumber } = this.userInfo
+        this.login({ password: this.password, usernumber })
       }
+    },
+    updateUserInfo(userInfo) {
+      if (JSON.stringify(userInfo) !== '{}') this.userInfo = userInfo
     },
     clear() {
       this.password = ''
+    },
+    async login({ usernumber, password }) {
+      if (usernumber && password) {
+        const result = await axiosGet(ROUTER.login, {
+          phone: usernumber,
+          password
+        })
+        console.log(result)
+      }
     }
   }
 }
