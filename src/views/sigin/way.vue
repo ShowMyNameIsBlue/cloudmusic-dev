@@ -43,7 +43,7 @@ export default {
       } else {
         way === 'p'
           ? this.$router.push('/sigin/phone')
-          : this.$router.push('/sigin/eamil')
+          : this.$router.push('/sigin/email')
       }
     }
   }

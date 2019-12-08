@@ -20,6 +20,11 @@ const routes = [
     component: () => import('@views/sigin/up/phone')
   },
   {
+    path: '/sigin/email',
+    name: 'email',
+    component: () => import('@views/sigin/up/email')
+  },
+  {
     path: '*',
     name: 'Default',
     redirect: '/'

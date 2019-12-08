@@ -9,9 +9,9 @@
         <i class="iconfont icon-cha icon" v-show="password" @click="clear"></i>
       </div>
       <el-button class="p-btn" @click.native="next">立即登录</el-button>
-      <router-link to="/" class="p-new"
-        >重设密码 <i class="el-icon-arrow-right"></i
-      ></router-link>
+      <div @click="resetPWD" class="p-new">
+        重设密码 <i class="el-icon-arrow-right"></i>
+      </div>
     </div>
     <me-warn ref="warn" icon="iconfont icon-cha"></me-warn>
   </div>
@@ -21,7 +21,8 @@
 import MeNavbar from '@comp/navbar'
 import { axiosGet } from '@assets/js/query'
 import MeWarn from '@comp/warn'
-import { PASSORD_WARN, ROUTER } from '../config'
+import { PASSORD_WARN, ROUTER, PASSORD_ERR } from '../config'
+import getLoginStatus from '@api/loginStatus'
 export default {
   name: 'PStep2',
   components: {
@@ -49,6 +50,9 @@ export default {
         this.login({ password: this.password, usernumber })
       }
     },
+    resetPWD() {
+      this.$emit('next2', { id: 4 })
+    },
     updateUserInfo(userInfo) {
       if (JSON.stringify(userInfo) !== '{}') this.userInfo = userInfo
     },
@@ -61,7 +65,12 @@ export default {
           phone: usernumber,
           password
         })
-        console.log(result)
+        if (result.account && result.profile) {
+          this.clear()
+          const res = await getLoginStatus()
+          this.$store.commit('updateloginStatus', res)
+          this.$router.push('/')
+        } else this.$refs.warn.show(PASSORD_ERR)
       }
     }
   }
@@ -79,6 +88,7 @@ export default {
   height: 100%;
   width: 100%;
   background: #fff;
+  position: absolute;
 }
 .p {
   padding: 0.25rem;

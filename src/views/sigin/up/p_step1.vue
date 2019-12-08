@@ -24,7 +24,8 @@
 <script>
 import MeNavbar from '@comp/navbar'
 import MeWarn from '@comp/warn'
-import { USERNUMBER_WARN } from '../config'
+import { USERNUMBER_WARN, ROUTER } from '../config'
+import { axiosGet } from '@assets/js/query'
 export default {
   name: 'PStep1',
   components: {
@@ -53,11 +54,14 @@ export default {
       this.$router.back()
       this.clear()
     },
-    next() {
+    async next() {
       const r = /^1\d{10}$/g
       if (!this.usernumber) return
       if (r.test(this.usernumber)) {
-        this.$emit('next1', { id: 1, usernumber: this.usernumber })
+        const isSigin = await this.validte()
+        if (!isSigin) {
+          this.$emit('next1', { id: 2, usernumber: this.usernumber })
+        } else this.$emit('next1', { id: 1, usernumber: this.usernumber })
         this.clear()
       } else {
         if (this.usernumber.length === 11) {
@@ -69,6 +73,12 @@ export default {
     },
     clear() {
       this.usernumber = ''
+    },
+    async validte() {
+      const result = await axiosGet(ROUTER.isSigin, { phone: this.usernumber })
+      const { exist } = result
+      if (exist === -1) return false
+      return true
     }
   }
 }
@@ -85,6 +95,7 @@ export default {
   height: 100%;
   width: 100%;
   background: #fff;
+  position: absolute;
 }
 .p {
   padding: 0.25rem;

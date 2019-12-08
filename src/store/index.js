@@ -5,18 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    footer_status: false
+    loginStatus: {}
   },
   mutations: {
-    changeFooterStatus(state) {
-      state.footer_status = !state.footer_status
+    updateloginStatus(state, newData) {
+      state.loginStatus = newData
+      console.log(state.loginStatus)
     }
   },
-  getters: {
-    footerStatus(state) {
-      return state.footer_status
-    }
-  },
+  getters: {},
   actions: {},
   modules: {}
 })

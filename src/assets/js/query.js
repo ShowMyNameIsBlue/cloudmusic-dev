@@ -15,22 +15,23 @@ const axiosGet = (url, data) => {
     })
     .catch(err => {
       console.error(err)
+      alert('此接口不可用')
+      window.location.href = '/'
       throw new Error(err)
     })
 }
 
-const axiosPost = (url, data = {}) => {
-  axios
-    .post(url, data)
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-}
+// const axiosPost = (url, data = {}) => {
+//   axios
+//     .post(url, data)
+//     .then(res => {
+//       console.log(res)
+//     })
+//     .catch(err => {
+//       console.log(err)
+//     })
+// }
 
 module.exports = {
-  axiosGet,
-  axiosPost
+  axiosGet
 }
