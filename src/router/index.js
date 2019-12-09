@@ -10,6 +10,26 @@ const routes = [
     component: () => import('@views/home')
   },
   {
+    path: '/video',
+    name: 'video',
+    component: () => import('@views/video')
+  },
+  {
+    path: '/me',
+    name: 'me',
+    component: () => import('@views/me')
+  },
+  {
+    path: '/cloudset',
+    name: 'cloudset',
+    component: () => import('@views/cloudset')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('@views/account')
+  },
+  {
     path: '/sigin',
     name: 'sigin',
     component: () => import('@views/sigin')

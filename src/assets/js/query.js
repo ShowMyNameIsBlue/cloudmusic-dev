@@ -10,7 +10,7 @@ const axiosGet = (url, data) => {
         return data
       } else {
         console.log(data.msg)
-        return 'request in error!'
+        return undefined
       }
     })
     .catch(err => {

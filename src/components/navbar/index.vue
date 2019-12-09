@@ -18,11 +18,10 @@
 <style lang="scss" scoped>
 @import '~@assets/scss/mixins';
 .c-navbar {
-  position: relative;
   @include flex-between();
   height: $navbar-height;
   width: 100%;
-
+  position: relative;
   &-left {
     margin-left: 0.25rem;
 

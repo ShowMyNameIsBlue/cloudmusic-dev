@@ -96,6 +96,7 @@ export default {
   width: 100%;
   background: #fff;
   position: absolute;
+  z-index: $tabbar-z-index + 10;
 }
 .p {
   padding: 0.25rem;

@@ -21,5 +21,6 @@ export default {
   height: 100%;
   @include switch();
   position: absolute;
+  z-index: $tabbar-z-index + 10;
 }
 </style>

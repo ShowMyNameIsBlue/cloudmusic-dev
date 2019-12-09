@@ -3,7 +3,9 @@
     <div class="c-view-container">
       <keep-alive> <router-view /></keep-alive>
     </div>
-    <div class="c-footer-container"></div>
+    <div class="c-footer-container">
+      <me-footer></me-footer>
+    </div>
   </div>
 </template>
 
@@ -12,7 +14,11 @@
 </style>
 
 <script>
+import MeFooter from '@comp/footbar'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    MeFooter
+  }
 }
 </script>
