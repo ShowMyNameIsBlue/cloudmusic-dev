@@ -10,7 +10,6 @@ export default new Vuex.Store({
   mutations: {
     updateloginStatus(state, newData) {
       state.loginStatus = newData
-      console.log(state.loginStatus)
     }
   },
   getters: {},

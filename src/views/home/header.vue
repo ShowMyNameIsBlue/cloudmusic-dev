@@ -1,6 +1,6 @@
 <template>
   <me-navbar class="header">
-    <i slot="left" class="iconfont icon-tinggeshiqu"></i>
+    <router-link to="/" class="iconfont icon-tinggeshiqu" slot="left" />
     <div slot="center">搜索</div>
     <me-icon class="right" slot="right"></me-icon>
   </me-navbar>

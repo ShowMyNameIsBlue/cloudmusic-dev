@@ -5,19 +5,24 @@
       <span class="right">歌单广场</span>
     </div>
     <div class="recommend-content">
-      <router-link class="recommend-content-item" to="/">
-        <me-loading v-if="data.length === 0" text></me-loading>
-        <i class="iconfont"></i>
-        <img class="img" src="" alt="" />
-        <p class="desc"></p>
+      <router-link
+        class="recommend-content-item"
+        to="/"
+        v-for="(item, index) in data"
+        :key="index"
+      >
+        <i class="iconfont icon-kongxinsanjiao-first">{{
+          playcount(item.playCount, item.playcount)
+        }}</i>
+        <img class="img" :src="item.picUrl" alt="" />
+        <p class="desc">{{ item.name }}</p>
       </router-link>
     </div>
   </div>
 </template>
 <script>
-// import { axiosGet } from '@assets/js/query'
-// import { ROUTER } from './config'
-import MeLoading from '@comp/loading'
+import { axiosGet } from '@assets/js/query'
+import { ROUTER } from './config'
 export default {
   name: 'HomeRecommend',
   data() {
@@ -25,14 +30,38 @@ export default {
       data: []
     }
   },
-  components: {
-    MeLoading
+  mounted() {
+    this.init()
+  },
+  methods: {
+    async init() {
+      const loginStatus = this.$store.state.loginStatus
+      let res = []
+      if (loginStatus && loginStatus.profile) {
+        res = await axiosGet(ROUTER.recommend)
+        res = res.recommend
+      } else {
+        res = await axiosGet(ROUTER.personalized, { limit: 6 })
+        res = res.result
+      }
+      this.data = res.filter((v, i) => {
+        return i < 6
+      })
+    },
+    playcount(num1, num2) {
+      const number = num1 ? num1.toString() : num2.toString()
+      if (number.length >= 9) {
+        return number.replace(/\d{8}$/g, '亿')
+      } else if (number.length >= 5) return number.replace(/\d{4}$/g, '万')
+      else return number
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 @import '~@assets/scss/mixins';
 .recommend {
+  height: 10rem;
   padding: 0.5rem;
   &-title {
     height: 0.75rem;
@@ -57,27 +86,32 @@ export default {
   &-content {
     @include flex-between();
     flex-wrap: wrap;
-    position: relative;
+
     margin-top: 0.4rem;
     &-item {
-      width: 2.75rem;
+      position: relative;
+      width: 2.6rem;
       height: 3.75rem;
-      border: 1px red solid;
+      margin-top: 0.25rem;
       .iconfont {
         position: absolute;
-        right: 0.25rem;
+        right: 0.1rem;
         top: 0.125rem;
         color: #fff;
+        font-size: 0.3rem;
       }
       .img {
-        width: 2.75rem;
-        height: 2.75rem;
+        width: 2.6rem;
+        height: 2.6rem;
         border-radius: 0.25rem;
       }
       .desc {
         font-size: 0.4rem;
         @include multiline-ellipsis();
         text-align: left;
+        color: #000;
+        font-size: 0.35rem;
+        padding-top: 0.25rem;
       }
     }
   }

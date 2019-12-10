@@ -7,6 +7,8 @@
           <home-banner> </home-banner>
           <home-tarbar></home-tarbar>
           <home-recommend></home-recommend>
+          <home-new></home-new>
+          <div class="test"></div>
         </div>
       </me-scroll>
     </div>
@@ -19,6 +21,7 @@ import HomeBanner from './banner'
 import MeScroll from '@comp/scroll'
 import HomeTarbar from './tarbar'
 import HomeRecommend from './recommend'
+import HomeNew from './new'
 
 export default {
   name: 'home',
@@ -32,7 +35,8 @@ export default {
     MeScroll,
     HomeBanner,
     HomeTarbar,
-    HomeRecommend
+    HomeRecommend,
+    HomeNew
   }
 }
 </script>
@@ -40,5 +44,9 @@ export default {
 .home {
   font-size: 0.35rem;
   height: 100%;
+}
+.test {
+  height: 600px;
+  background: red;
 }
 </style>

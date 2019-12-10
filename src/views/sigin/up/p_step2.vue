@@ -65,7 +65,8 @@ export default {
           phone: usernumber,
           password
         })
-        if (result.account && result.profile) {
+
+        if (result && result.account && result.profile) {
           this.clear()
           const res = await getLoginStatus()
           this.$store.commit('updateloginStatus', res)

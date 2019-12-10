@@ -35,8 +35,7 @@ export default {
   display: flex;
   width: 100%;
   height: $tabbar-height;
-  background-color: rgba($color: #eee, $alpha: 0.8);
-
+  background-color: #eee;
   &-item {
     flex: 1;
     @include flex-center(column);
