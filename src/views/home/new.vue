@@ -36,7 +36,7 @@ export default {
       data: []
     }
   },
-  mounted() {
+  created() {
     this.init()
   },
   methods: {
@@ -142,6 +142,10 @@ export default {
           @include ellipsis();
           font-size: 0.35rem;
           color: #999;
+        }
+        &.auth {
+          @include ellipsis();
+          line-height: 0.4rem;
         }
       }
     }

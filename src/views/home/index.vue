@@ -2,13 +2,13 @@
   <div class="home">
     <home-header class="c-header-container"></home-header>
     <div class="c-content-container">
-      <me-scroll>
+      <me-scroll ref="scroll" :data="data">
         <div>
           <home-banner> </home-banner>
           <home-tarbar></home-tarbar>
           <home-recommend></home-recommend>
           <home-new></home-new>
-          <div class="test"></div>
+          <home-video @loaded="getVideo"></home-video>
         </div>
       </me-scroll>
     </div>
@@ -16,12 +16,14 @@
 </template>
 
 <script>
+// import BScroll from 'better-scroll'
 import HomeHeader from './header'
 import HomeBanner from './banner'
 import MeScroll from '@comp/scroll'
 import HomeTarbar from './tarbar'
 import HomeRecommend from './recommend'
 import HomeNew from './new'
+import HomeVideo from './video'
 
 export default {
   name: 'home',
@@ -36,7 +38,13 @@ export default {
     HomeBanner,
     HomeTarbar,
     HomeRecommend,
-    HomeNew
+    HomeNew,
+    HomeVideo
+  },
+  methods: {
+    getVideo(videos) {
+      this.data = videos
+    }
   }
 }
 </script>

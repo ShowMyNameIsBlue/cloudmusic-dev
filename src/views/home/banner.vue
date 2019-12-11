@@ -52,15 +52,16 @@ export default {
 @import '~@assets/scss/mixins';
 .banner {
   width: 8.625rem;
-  height: 3.375rem;
+  height: 3.68rem;
   margin: 0.3rem auto;
   position: relative;
+  border-radius: 0.25rem;
+  overflow: hidden;
 }
 .slide {
   .img {
     width: 100%;
     height: 3.375rem;
-    border-radius: 0.25rem;
   }
   .title {
     display: block;

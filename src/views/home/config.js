@@ -5,6 +5,8 @@ module.exports = {
     personalized: '/api/personalized',
     topsong: '/api/top/song',
     topalbum: '/api/top/album',
-    video: '/api/video/group/list'
+    video: '/api/mv/all',
+    user: '/api/user/detail',
+    mvComment: '/api/comment/mv'
   }
 }
