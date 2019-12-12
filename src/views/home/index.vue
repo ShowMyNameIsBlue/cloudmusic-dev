@@ -2,13 +2,18 @@
   <div class="home">
     <home-header class="c-header-container"></home-header>
     <div class="c-content-container">
-      <me-scroll ref="scroll" :data="data">
+      <me-scroll
+        ref="scroll"
+        :data="data"
+        :pullUp="true"
+        @pullUpBegin="loadingMore"
+      >
         <div>
           <home-banner> </home-banner>
           <home-tarbar></home-tarbar>
           <home-recommend></home-recommend>
           <home-new></home-new>
-          <home-video @loaded="getVideo"></home-video>
+          <home-video @loaded="getVideo" ref="video"></home-video>
         </div>
       </me-scroll>
     </div>
@@ -44,6 +49,13 @@ export default {
   methods: {
     getVideo(videos) {
       this.data = videos
+    },
+    loadingMore() {
+      const t = this
+      setTimeout(async () => {
+        await t.$refs.video.getMore()
+        t.$refs.scroll.pullUpEnd()
+      }, 2000)
     }
   }
 }

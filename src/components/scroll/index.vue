@@ -1,16 +1,21 @@
 <template>
   <div class="scroll" ref="scroll" @refresh="init">
-    <slot />
+    <div>
+      <slot />
+      <div class="pullUp" v-if="dropUp"><me-loading inline></me-loading></div>
+    </div>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+import MeLoading from '@comp/loading'
 export default {
   name: 'MeScroll',
   data() {
     return {
-      scroll: ''
+      dropUp: false,
+      upEnd: false
     }
   },
   props: {
@@ -20,12 +25,26 @@ export default {
     },
     data: {
       type: [Array, Object]
+    },
+    pullUp: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
     data() {
       this.init()
+    },
+    upEnd(newvalue) {
+      if (newvalue) {
+        this.scroll.finishPullUp()
+        this.dropUp = false
+        this.scroll.refresh()
+      }
     }
+  },
+  components: {
+    MeLoading
   },
   mounted() {
     this.init()
@@ -36,13 +55,22 @@ export default {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.scroll, {
             click: true,
-            scrollX: this.scrollX
+            scrollX: this.scrollX,
+            pullUpLoad: {
+              threshold: 0
+            }
           })
+          if (this.pullUp) this.scroll.on('pullingUp', this.updateData)
         } else if (!this.$refs.scroll) return 0
-        else {
-          this.scroll.refresh()
-        }
+        else this.scroll.refresh()
       })
+    },
+    updateData() {
+      this.dropUp = true
+      this.$emit('pullUpBegin')
+    },
+    pullUpEnd() {
+      this.upEnd = true
     }
   }
 }
@@ -53,5 +81,9 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+.pullUp {
+  width: 100%;
+  height: 1rem;
 }
 </style>

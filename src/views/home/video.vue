@@ -38,6 +38,7 @@ export default {
   name: 'HomeVideo',
   data() {
     return {
+      newOffset: 0,
       data: []
     }
   },
@@ -51,12 +52,21 @@ export default {
     refresh() {
       this.pagination(Math.floor(Math.random() * 15 + 1))
     },
-    getMore() {},
+    async getMore() {
+      const res = await axiosGet(ROUTER.video, {
+        limit: 10,
+        offset: this.newOffset
+      })
+      const { data } = res
+      this.$emit('loaded', data)
+      this.data.push(...data)
+    },
     async pagination(offset = 0, limit = 10) {
       const res = await axiosGet(ROUTER.video, {
         limit,
         offset
       })
+      this.newOffset = offset + limit
       const { data } = res
       this.$emit('loaded', data)
       this.data = data
