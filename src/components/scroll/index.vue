@@ -29,6 +29,10 @@ export default {
     pullUp: {
       type: Boolean,
       default: false
+    },
+    probeType: {
+      type: Number,
+      default: 0
     }
   },
   watch: {
@@ -67,10 +71,19 @@ export default {
     },
     updateData() {
       this.dropUp = true
+      this.scroll.refresh()
       this.$emit('pullUpBegin')
     },
     pullUpEnd() {
       this.upEnd = true
+    },
+    getScroll() {
+      if (!this.scroll) {
+        return new BScroll(this.$refs.scroll, {
+          click: true,
+          probeType: this.probeType
+        })
+      } else return this.scroll
     }
   }
 }

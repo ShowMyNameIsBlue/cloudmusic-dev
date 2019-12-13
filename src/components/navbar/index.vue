@@ -21,7 +21,7 @@
   @include flex-between();
   height: $navbar-height;
   width: 100%;
-  position: relative;
+  position: absolute;
   &-left {
     margin-left: 0.25rem;
 

@@ -1,6 +1,6 @@
 <template>
   <div class="tarbar">
-    <router-link to="/" class="tarbar-item">
+    <router-link to="/dayRecommend" class="tarbar-item">
       <i class="iconfont icon-rili"></i>
       <span>每日推荐</span>
     </router-link>

@@ -8,20 +8,29 @@
         :pullUp="true"
         @pullUpBegin="loadingMore"
       >
-        <div>
-          <home-banner> </home-banner>
-          <home-tarbar></home-tarbar>
-          <home-recommend></home-recommend>
-          <home-new></home-new>
-          <home-video @loaded="getVideo" ref="video"></home-video>
-        </div>
+        <home-banner> </home-banner>
+        <home-tarbar></home-tarbar>
+        <home-recommend></home-recommend>
+        <home-new></home-new>
+        <home-video
+          @loaded="getVideo"
+          @moreInfo="moreInfo"
+          ref="video"
+        ></home-video>
       </me-scroll>
+      <me-more v-if="showMore" @click.native="back">
+        <div>
+          <div class="title">更多</div>
+          <i class="iconfont icon-cha" @click="deleteThis"
+            ><span>不感兴趣</span></i
+          >
+        </div>
+      </me-more>
     </div>
   </div>
 </template>
 
 <script>
-// import BScroll from 'better-scroll'
 import HomeHeader from './header'
 import HomeBanner from './banner'
 import MeScroll from '@comp/scroll'
@@ -29,12 +38,15 @@ import HomeTarbar from './tarbar'
 import HomeRecommend from './recommend'
 import HomeNew from './new'
 import HomeVideo from './video'
+import MeMore from '@comp/more'
 
 export default {
   name: 'home',
   data() {
     return {
-      data: []
+      data: [],
+      showMore: false,
+      deleIdx: ''
     }
   },
   components: {
@@ -44,7 +56,8 @@ export default {
     HomeTarbar,
     HomeRecommend,
     HomeNew,
-    HomeVideo
+    HomeVideo,
+    MeMore
   },
   methods: {
     getVideo(videos) {
@@ -56,17 +69,44 @@ export default {
         await t.$refs.video.getMore()
         t.$refs.scroll.pullUpEnd()
       }, 2000)
+    },
+    moreInfo(index) {
+      this.deleIdx = index
+      this.showMore = true
+    },
+    back() {
+      this.showMore = false
+    },
+    deleteThis() {
+      this.$refs.video.deleteThis(this.deleIdx)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import '~@assets/scss/mixins';
+.c-content-container {
+  padding-bottom: 0;
+}
 .home {
   font-size: 0.35rem;
   height: 100%;
+  padding-top: $navbar-height;
 }
-.test {
-  height: 600px;
-  background: red;
+.title {
+  display: block;
+  color: #999;
+  line-height: 1.25rem;
+  text-indent: 0.5rem;
+  border-bottom: 1px solid #dddd;
+}
+.iconfont {
+  color: #000;
+  font-size: 0.4rem;
+  line-height: 1.25rem;
+  padding-left: 0.5rem;
+  & span {
+    padding-left: 0.2rem;
+  }
 }
 </style>

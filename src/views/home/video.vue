@@ -21,9 +21,15 @@
           <span></span>
         </router-link>
         <div class="video-footer">
-          <i class="zan iconfont icon-zan"> {{ getRandom(item.playCount) }}</i>
+          <i
+            class="zan iconfont icon-zan"
+            @click="zan(index)"
+            :class="{ zanActive: zans_idx.includes(index) }"
+          >
+            {{ getRandom(item.playCount) }}</i
+          >
           <router-link class="msg iconfont icon-c_message" to="/"></router-link>
-          <i class="more iconfont icon-msnui-more" @click="getMore"></i>
+          <i class="more iconfont icon-msnui-more" @click="moreInfo(index)"></i>
         </div>
       </div>
     </div>
@@ -33,11 +39,12 @@
 import { axiosGet } from '@assets/js/query'
 import { ROUTER } from './config'
 import { playcount, duration } from '@assets/js/util'
-// import MeMore from '@comp/more'
 export default {
   name: 'HomeVideo',
   data() {
     return {
+      zans: false,
+      zans_idx: [],
       newOffset: 0,
       data: []
     }
@@ -51,6 +58,9 @@ export default {
     },
     refresh() {
       this.pagination(Math.floor(Math.random() * 15 + 1))
+    },
+    moreInfo(index) {
+      this.$emit('moreInfo', index)
     },
     async getMore() {
       const res = await axiosGet(ROUTER.video, {
@@ -71,10 +81,18 @@ export default {
       this.$emit('loaded', data)
       this.data = data
     },
+    zan(idx) {
+      if (this.zans_idx.includes(idx)) {
+        this.zans_idx = this.zans_idx.filter((v, i) => i !== idx)
+      } else this.zans_idx.push(idx)
+    },
     playcount,
     duration,
     getRandom(num) {
       return this.playcount(parseInt(num / 8))
+    },
+    deleteThis(index) {
+      this.data = this.data.filter((v, i) => i !== index)
     }
   }
 }
@@ -177,6 +195,9 @@ export default {
   .zan {
     position: absolute;
     left: 0.6rem;
+  }
+  .zanActive {
+    color: $theme;
   }
   .msg {
     position: absolute;
