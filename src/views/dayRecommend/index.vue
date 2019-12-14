@@ -1,30 +1,45 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend" @scroll="scroll">
     <recommend-header class="c-header-container"></recommend-header>
     <div class="c-content-container">
-      <me-scroll ref="scroll" :probeType="2" class="scroll">
-        <img class="recommend-pic" src="" alt="" />
-        <div class="recommend-list"></div>
-      </me-scroll>
+      <div ref="scroll" class="scroll">
+        <!-- <img class="recommend-pic" src="" alt="" /> -->
+        <div
+          class="recommend-list "
+          ref="scroll1"
+          :class="{ list_active: isScroll }"
+        >
+          <div class="test"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MeScroll from '@comp/scroll'
 import RecommendHeader from './header'
 export default {
   name: 'dayRecommend',
+  data() {
+    return {
+      first: false,
+      isScroll: false
+    }
+  },
   components: {
-    MeScroll,
     RecommendHeader
   },
-  mounted() {
-    const scroll = this.$refs.scroll.getScroll()
-    scroll.refresh()
-    // scroll.on('scroll', x => {
-    //   console.log(x)
-    // })
+  methods: {
+    scroll() {
+      if (this.$refs.recommend.scrollTop > 120) {
+        this.isScroll = true
+        this.first = true
+      }
+      if (this.first && this.$refs.recommend.scrollTop === 0) {
+        this.isScroll = false
+        this.first = false
+      }
+    }
   }
 }
 </script>
@@ -33,6 +48,8 @@ export default {
 .recommend {
   width: 100%;
   height: 100%;
+  overflow: scroll;
+  padding-top: 1.25rem;
   &-pic {
     display: block;
     height: 4.75rem;
@@ -40,19 +57,28 @@ export default {
     background: red;
   }
   &-list {
-    height: 16rem;
+    height: 100%;
     width: 100%;
-    background: black;
+    background: blanchedalmond;
     border-radius: 0.5rem 0.5rem 0 0;
-    margin-top: -0.5rem;
+    padding-top: 4rem;
+    overflow: hidden;
+    margin-top: 3.5rem;
   }
-  // &-pic {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  // }
+  .list_active {
+    overflow: scroll;
+  }
 }
 .c-content-container {
   padding: 0;
+}
+.scroll {
+  width: 100%;
+  height: 100%;
+}
+.test {
+  width: 100%;
+  height: 20rem;
+  background: gold;
 }
 </style>

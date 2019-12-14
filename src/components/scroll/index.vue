@@ -62,11 +62,13 @@ export default {
             scrollX: this.scrollX,
             pullUpLoad: {
               threshold: 0
-            }
+            },
+            stopPropagation: true
           })
           if (this.pullUp) this.scroll.on('pullingUp', this.updateData)
-        } else if (!this.$refs.scroll) return 0
-        else this.scroll.refresh()
+        } else if (!this.$refs.scroll) {
+          return 0
+        } else this.scroll.refresh()
       })
     },
     updateData() {
@@ -81,9 +83,12 @@ export default {
       if (!this.scroll) {
         return new BScroll(this.$refs.scroll, {
           click: true,
-          probeType: this.probeType
+          probeType: this.probeType,
+          stopPropagation: true
         })
-      } else return this.scroll
+      } else {
+        return this.scroll
+      }
     }
   }
 }
