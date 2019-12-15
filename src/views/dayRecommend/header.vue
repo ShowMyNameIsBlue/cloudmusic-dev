@@ -25,6 +25,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.header {
+  color: #eee;
+}
 .left {
   font-size: 0.625rem;
 }
