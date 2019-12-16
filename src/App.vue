@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="c-container">
     <div class="c-view-container">
-      <keep-alive> <router-view /></keep-alive>
+      <keep-alive exclude="account"> <router-view /></keep-alive>
     </div>
     <div class="c-footer-container">
       <me-footer></me-footer>

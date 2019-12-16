@@ -18,6 +18,8 @@
           ref="video"
         ></home-video>
       </me-scroll>
+
+      <me-warn ref="warn"></me-warn>
       <me-more v-if="showMore" @click.native="back">
         <div>
           <div class="title">更多</div>
@@ -39,6 +41,7 @@ import HomeRecommend from './recommend'
 import HomeNew from './new'
 import HomeVideo from './video'
 import MeMore from '@comp/more'
+import MeWarn from '@comp/warn'
 
 export default {
   name: 'home',
@@ -57,7 +60,8 @@ export default {
     HomeRecommend,
     HomeNew,
     HomeVideo,
-    MeMore
+    MeMore,
+    MeWarn
   },
   methods: {
     getVideo(videos) {
@@ -77,6 +81,9 @@ export default {
     back() {
       this.showMore = false
     },
+    // showWarn(msg) {
+    //   this.$refs.warn.show(msg)
+    // },
     deleteThis() {
       this.$refs.video.deleteThis(this.deleIdx)
     }

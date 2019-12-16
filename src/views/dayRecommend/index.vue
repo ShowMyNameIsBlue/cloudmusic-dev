@@ -5,37 +5,37 @@
       ><span>{{ day }} </span>/ {{ month }}</span
     >
     <div class="c-content-container">
-      <div ref="scroll" class="scroll">
-        <div class="playall">
-          <i class="iconfont icon-bofang"> 播放全部</i>
-          <i class="iconfont icon-gengduo"><span> 多选</span></i>
-        </div>
+      <!-- <div ref="scroll" class="scroll"> -->
+      <div class="playall">
+        <i class="iconfont icon-bofang"> 播放全部</i>
+        <i class="iconfont icon-gengduo"><span> 多选</span></i>
+      </div>
+      <div
+        class="recommend-list "
+        ref="scroll1"
+        :class="{ list_active: isScroll }"
+      >
         <div
-          class="recommend-list "
-          ref="scroll1"
-          :class="{ list_active: isScroll }"
+          class="recommend-list-item"
+          v-for="(item, index) in data"
+          :key="index"
         >
-          <div
-            class="recommend-list-item"
-            v-for="(item, index) in data"
-            :key="index"
-          >
-            <router-link to="/" class="main" tag="div" @click="playsong(index)">
-              <img :src="item.album.picUrl" alt="" class="img" />
-              <i class="iconfont icon-laba " v-if="index === playId"></i>
-              <p>
-                <span class="title">{{ item.name }}</span>
-                <span class="desc">{{
-                  `${item.album.artists[0].name}-${item.album.name}`
-                }}</span>
-              </p>
-            </router-link>
-            <i class="iconfont icon-msnui-more"></i>
-          </div>
+          <router-link to="/" class="main" tag="div" @click="playsong(index)">
+            <img :src="item.album.picUrl" alt="" class="img" />
+            <i class="iconfont icon-laba " v-if="index === playId"></i>
+            <p>
+              <span class="title">{{ item.name }}</span>
+              <span class="desc">{{
+                `${item.album.artists[0].name}-${item.album.name}`
+              }}</span>
+            </p>
+          </router-link>
+          <i class="iconfont icon-msnui-more"></i>
         </div>
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -57,6 +57,14 @@ export default {
   },
   created() {
     this.init()
+  },
+  // 获取路由父组件
+  beforeRouteEnter(to, from, next) {
+    const { instances } = from.matched[0]
+    const t = instances.default
+    if (JSON.stringify(t.$store.state.loginStatus) === '{}') {
+      t.$refs.warn.show('请先登录')
+    } else next()
   },
   methods: {
     init() {
@@ -92,13 +100,7 @@ export default {
       }
     }
   },
-  watch: {
-    $route(to) {
-      if (to.fullPath === '/dayRecommend') {
-        this.$router.go(0)
-      }
-    }
-  },
+
   components: {
     RecommendHeader
   }
@@ -186,6 +188,7 @@ export default {
             color: #000;
             font-size: 0.4rem;
             text-indent: 0.4rem;
+            @include ellipsis();
           }
           .desc {
             width: 100%;
@@ -211,11 +214,11 @@ export default {
 .c-content-container {
   padding: 0;
 }
-.scroll {
-  width: 100%;
-  height: 100%;
-}
-.scroll-wrapper {
-  overflow: hidden;
-}
+// .scroll {
+//   width: 100%;
+//   height: 130%;
+// }
+// .scroll-wrapper {
+//   overflow: hidden;
+// }
 </style>

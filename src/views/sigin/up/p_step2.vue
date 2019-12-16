@@ -65,7 +65,6 @@ export default {
           phone: usernumber,
           password
         })
-
         if (result && result.account && result.profile) {
           this.clear()
           const res = await getLoginStatus()

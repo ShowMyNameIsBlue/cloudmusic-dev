@@ -10,9 +10,16 @@ export default new Vuex.Store({
   mutations: {
     updateloginStatus(state, newData) {
       state.loginStatus = newData
+    },
+    clearloginStatus(state) {
+      state.loginStatus = {}
     }
   },
-  getters: {},
+  getters: {
+    getLoginStatus(state) {
+      return state.loginStatus
+    }
+  },
   actions: {},
   modules: {}
 })

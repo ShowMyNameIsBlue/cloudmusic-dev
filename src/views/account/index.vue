@@ -1,24 +1,31 @@
 <template>
   <div class="account">
     <account-header class="c-header-container"></account-header>
+
     <div class="account-info c-content-container">
-      <p class="account-content" v-show="islogin">
+      <p class="account-content" v-if="!islogin">
         登录网易云音乐<br />
         手机电脑多端同步，尽享海量品质音乐
         <el-button class="account-btn" @click="login">立即登录</el-button>
       </p>
-      <div class="account-new-content" v-show="!islogin">
+      <div class="account-new-content" v-if="islogin">
         <div class="detail">
-          <img src="" alt="" />
+          <img :src="data.profile.avatarUrl" alt="" />
           <div class="main">
-            <span class="name">意思</span>
-            <span class="level">lv7</span>
+            <span class="name">{{ data.profile.nickname }}</span>
+            <span class="level">lv {{ data.level }}</span>
           </div>
         </div>
         <div class="info-list">
-          <div class="info-list-item"><span></span><span>动态</span></div>
-          <div class="info-list-item"><span></span><span>关注</span></div>
-          <div class="info-list-item"><span></span><span>粉丝</span></div>
+          <div class="info-list-item">
+            {{ data.profile.eventCount }}<span></span><span>动态</span>
+          </div>
+          <div class="info-list-item">
+            {{ data.profile.follows }}<span></span><span>关注</span>
+          </div>
+          <div class="info-list-item">
+            {{ data.profile.followeds }}<span></span><span>粉丝</span>
+          </div>
           <div class="info-list-item">
             <span class="iconfont icon-bi"></span><span>编辑资料</span>
           </div>
@@ -31,53 +38,85 @@
         <div><i class="iconfont icon-menpiao"></i>演出</div>
         <div><i class="iconfont icon-gexingzhuangban"></i>个性装扮</div>
       </div>
-    </div>
-    <div class="account-menu">
-      <div>
-        <i class="iconfont icon-dingdan"><span>订单</span> </i
-        ><i class="el-icon-arrow-right"></i>
+      <div class="account-menu">
+        <div>
+          <i class="iconfont icon-dingdan"><span>订单</span> </i
+          ><i class="el-icon-arrow-right"></i>
+        </div>
+        <div>
+          <i class="iconfont icon-danchuang_sheweishoujicailing_fufei_">
+            <span>口袋彩铃</span></i
+          ><i class="el-icon-arrow-right"></i>
+        </div>
+        <div>
+          <i class="iconfont icon-shezhi1"> <span>设置</span></i
+          ><i class="el-icon-arrow-right"></i>
+        </div>
+        <div>
+          <i class="iconfont icon-yejian"> <span>夜间模式</span></i>
+        </div>
+        <div>
+          <i class="iconfont icon-fenxiang"> <span>分享</span></i>
+        </div>
+        <div>
+          <i class="iconfont icon-gantanhao"> <span>关于</span></i>
+        </div>
       </div>
-      <div>
-        <i class="iconfont icon-danchuang_sheweishoujicailing_fufei_">
-          <span>口袋彩铃</span></i
-        ><i class="el-icon-arrow-right"></i>
+      <div class="custom-btn" ref="parent" @click="translate">
+        <div class="bg" ref="bg"></div>
+        <div class="btn" ref="btn"></div>
       </div>
-      <div>
-        <i class="iconfont icon-shezhi1"> <span>设置</span></i
-        ><i class="el-icon-arrow-right"></i>
-      </div>
-      <div>
-        <i class="iconfont icon-yejian"> <span>夜间模式</span></i>
-      </div>
-      <div>
-        <i class="iconfont icon-fenxiang"> <span>分享</span></i>
-      </div>
-      <div>
-        <i class="iconfont icon-gantanhao"> <span>关于</span></i>
-      </div>
-    </div>
-    <div class="custom-btn" ref="parent" @click="translate">
-      <div class="bg" ref="bg"></div>
-      <div class="btn" ref="btn"></div>
+      <el-button class="loginout-btn" @click="loginout" v-if="islogin"
+        >退出登录</el-button
+      >
     </div>
   </div>
 </template>
 <script>
 import AccountHeader from './header'
+import { ROUTER } from './config'
+import { axiosGet } from '@assets/js/query'
 export default {
+  name: 'account',
   data() {
     return {
       status: false,
-      islogin: false
+      islogin: false,
+      data: {}
     }
   },
-  name: 'account',
   components: {
     AccountHeader
   },
+  created() {
+    this.init()
+  },
+
   methods: {
+    init() {
+      this.getData()
+    },
+    async getData() {
+      const { profile } = this.$store.state.loginStatus
+      if (profile && profile.userId) {
+        const res = await axiosGet(ROUTER.userInfo, { uid: profile.userId })
+        if (res) {
+          this.data = res
+          this.islogin = true
+        } else {
+          this.islogin = false
+        }
+      }
+    },
     login() {
       this.$router.push('/sigin')
+    },
+    async loginout() {
+      const res = await axiosGet(ROUTER.loginout)
+      if (res) {
+        this.$store.commit('clearloginStatus')
+        this.islogin = false
+      }
     },
     translate() {
       if (!this.status) {
@@ -98,9 +137,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@assets/scss/mixins';
+.c-header-container {
+  background: #fff;
+}
 .account {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
   &-info {
-    padding: 1.25rem 0.4rem 0;
+    margin-top: 1.25rem;
   }
   &-content {
     width: 100%;
@@ -110,8 +155,10 @@ export default {
     line-height: 0.5rem;
     font-size: 0.4rem;
     color: #000;
+    padding: 0 0.4rem;
   }
   &-new-content {
+    padding: 0 0.4rem;
     .detail {
       @include flex-center();
       justify-content: flex-start;
@@ -125,19 +172,20 @@ export default {
       }
       .main {
         text-align: center;
-        width: 1.5rem;
+        width: 2.5rem;
         height: 1.5rem;
 
         @include flex-center(column);
         .name {
           line-height: 0.7rem;
           font-size: 0.4rem;
+          padding: 0.1rem 0;
         }
         .level {
           display: inline-block;
-          height: 0.5rem;
+          height: 0.4rem;
           width: 1rem;
-          line-height: 0.5rem;
+          line-height: 0.4rem;
           border: 1px solid #eee;
           border-radius: 0.3rem;
           background: #eee;
@@ -150,7 +198,7 @@ export default {
       padding: 0 0.3rem;
       &-item {
         // width: 1.8rem;
-        // padding-right: 1rem;
+        padding-right: 0.8rem;
         height: 1.2rem;
         text-align: center;
         font-size: 0.3rem;
@@ -162,6 +210,7 @@ export default {
         }
         &:last-child {
           border: none;
+          padding-right: 0rem;
         }
       }
     }
@@ -176,7 +225,7 @@ export default {
   &-tabbar {
     position: relative;
     height: 2rem;
-    padding: 0 0.3rem;
+    padding: 0 0.7rem;
     @include flex-between();
     text-align: center;
     .iconfont {
@@ -215,6 +264,16 @@ export default {
       }
     }
   }
+}
+.loginout-btn {
+  position: relative;
+  margin-top: -0.5rem;
+  width: 95%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0.5rem;
+  color: #000;
+  letter-spacing: 1px;
 }
 .custom-btn {
   position: relative;

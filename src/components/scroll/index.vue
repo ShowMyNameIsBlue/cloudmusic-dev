@@ -1,7 +1,7 @@
 <template>
   <div class="scroll" ref="scroll" @refresh="init">
     <div>
-      <slot />
+      <slot></slot>
       <div class="pullUp" v-if="dropUp"><me-loading inline></me-loading></div>
     </div>
   </div>
