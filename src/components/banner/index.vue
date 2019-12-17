@@ -25,11 +25,7 @@ export default {
       type: Array
     },
     interval: {
-      type: Number,
-      default: 3000,
-      validator(value) {
-        return value >= 0
-      }
+      default: 3000
     },
     loop: {
       type: Boolean,
@@ -41,6 +37,9 @@ export default {
       validator(value) {
         return ['horizontal', 'vertical'].indexOf(value) > -1
       }
+    },
+    slidesPerView: {
+      default: 1
     }
   },
   watch: {
@@ -64,7 +63,7 @@ export default {
               disableOnInteraction: false
             }
           : false,
-        slidesPerView: 1,
+        slidesPerView: this.slidesPerView,
         loop: this.data.length <= 1 ? false : this.loop,
         pagination: {
           el: this.pagination ? '.swiper-pagination' : null

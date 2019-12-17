@@ -81,9 +81,6 @@ export default {
     back() {
       this.showMore = false
     },
-    // showWarn(msg) {
-    //   this.$refs.warn.show(msg)
-    // },
     deleteThis() {
       this.$refs.video.deleteThis(this.deleIdx)
     }

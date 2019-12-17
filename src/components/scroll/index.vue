@@ -1,8 +1,8 @@
 <template>
   <div class="scroll" ref="scroll" @refresh="init">
-    <div>
+    <div class="wrapper">
       <slot></slot>
-      <div class="pullUp" v-if="dropUp"><me-loading inline></me-loading></div>
+      <div class="pullUp" v-show="dropUp"><me-loading inline></me-loading></div>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   props: {
     scrollX: {
       type: Boolean,
-      default: false
+      default: true
     },
     data: {
       type: [Array, Object]
@@ -103,5 +103,6 @@ export default {
 .pullUp {
   width: 100%;
   height: 1rem;
+  // padding-bottom: 2rem;
 }
 </style>

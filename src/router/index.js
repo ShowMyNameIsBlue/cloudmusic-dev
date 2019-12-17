@@ -12,7 +12,13 @@ const routes = [
   {
     path: '/video',
     name: 'video',
-    component: () => import('@views/video')
+    component: () => import('@views/video'),
+    children: [
+      {
+        path: 'type/:id',
+        component: () => import('@views/video/main')
+      }
+    ]
   },
   {
     path: '/dayRecommend',
