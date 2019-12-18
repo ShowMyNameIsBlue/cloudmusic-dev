@@ -8,6 +8,7 @@
 <script>
 import VideoHeader from './header'
 import VideoTabbar from './tabbar'
+
 export default {
   name: 'videos',
   components: {

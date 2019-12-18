@@ -16,7 +16,10 @@ const routes = [
     children: [
       {
         path: 'type/:id',
-        component: () => import('@views/video/main')
+        component: () => import('@views/video/main'),
+        meta: {
+          keepAlive: false
+        }
       }
     ]
   },

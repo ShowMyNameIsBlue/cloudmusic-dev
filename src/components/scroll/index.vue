@@ -105,4 +105,7 @@ export default {
   height: 1rem;
   // padding-bottom: 2rem;
 }
+.wrapper {
+  width: 100%;
+}
 </style>

@@ -1,21 +1,38 @@
 <template>
   <div class="main">
-    <me-scroll>
+    <me-scroll :pullUp="true" @pullUpBegin="getNewData" ref="scroll">
       <div class="main-list">
         <div class="main-list-item" v-for="(item, index) in data" :key="index">
           <div class="main-list-item-content">
             <router-link to="/">
-              <img class="bg" src="" alt="" />
+              <img class="bg" :src="item.data.coverUrl" alt="" />
             </router-link>
             <i class="play iconfont icon-kongxinsanjiao-first"></i>
-            <i class="playcount iconfont icon-kongxinsanjiao-first"></i>
-            <i class="time iconfont icon-paihangbangfuben"> </i>
-            <div class="title"></div>
+            <i class="playcount iconfont icon-kongxinsanjiao-first">{{
+              playcount(item.data.playTime)
+            }}</i>
+            <i class="duration iconfont icon-paihangbangfuben">{{
+              duration(item.data.durationms)
+            }}</i>
+            <div class="title">{{ item.data.title }}</div>
             <div class="author">
-              <img class="avatar" src="" alt="" />
-              <i class=" iconfont praise icon-zan"></i>
-              <i class="iconfont comment icon-c_message"></i>
-              <i class="iconfont more icon-msnui-more"></i>
+              <i
+                ><img
+                  class="avatar"
+                  :src="item.data.creator.avatarUrl"
+                  alt=""
+                /><span>{{ item.data.creator.nickname }}</span></i
+              >
+              <i class="iconfont praise icon-zan"
+                ><span>{{ newplaycount(item.data.praisedCount) }}</span></i
+              >
+              <i class="iconfont comment icon-c_message"
+                ><span>{{ newplaycount(item.data.commentCount) }}</span></i
+              >
+              <i
+                class="iconfont more icon-msnui-more"
+                @click="moreInfo(index)"
+              ></i>
             </div>
           </div>
         </div>
@@ -26,28 +43,150 @@
 
 <script>
 import MeScroll from '@comp/scroll'
+import { axiosGet } from '@assets/js/query'
+import { ROUTER } from './config'
+import { playcount, duration } from '@assets/js/util'
 export default {
   name: 'VideoMain',
   data() {
     return {
-      data: [1]
+      data: []
     }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    async init() {
+      const data = await this.getData()
+      this.data = data
+    },
+    async getData() {
+      const { id } = this.$route.params
+      const res = await axiosGet(ROUTER.vdo_detail, { id })
+      const { datas } = res
+      return datas
+    },
+    async getNewData() {
+      const data = await this.getData()
+      const t = this
+      setTimeout(() => {
+        t.data.push(...data)
+        t.$refs.scroll.pullUpEnd()
+      }, 2000)
+    },
+    moreInfo(index) {
+      console.log(this)
+      this.$parent.moreInfo(index)
+    },
+    deleteThis(idx) {
+      this.data = this.data.filter((v, i) => i !== idx)
+    },
+    newplaycount(num) {
+      if (num >= 999) {
+        return '999+'
+      }
+      return num
+    },
+    playcount,
+    duration
   },
   components: {
     MeScroll
+  },
+  watch: {
+    async $route(to) {
+      if (to.fullPath.includes('/video/type') && to.params.id) {
+        const res = await this.getData()
+        this.data = res
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~@assets/scss/mixins';
 .main {
   width: 100%;
   height: 100%;
   &-list {
     width: 100%;
+    // height: 100%;
     &-item {
+      width: 100%;
       &-content {
-        padding: 0 0.5rem;
+        width: 100%;
+        position: relative;
+        padding: 0.5rem;
+        .bg {
+          display: block;
+          width: 100%;
+          height: 4.625rem;
+          border-radius: 0.25rem;
+        }
+        .play {
+          position: absolute;
+          font-size: 0.8rem;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -200%);
+          color: #fff;
+          font-weight: bold;
+        }
+        .playcount {
+          position: absolute;
+          top: 4.6rem;
+          left: 0.7rem;
+        }
+        .duration {
+          position: absolute;
+          top: 4.6rem;
+          right: 0.7rem;
+        }
+        .title {
+          color: #111;
+          border-bottom: #bbb 1px solid;
+          @include multiline-ellipsis();
+          font-size: 0.4rem;
+          padding: 0.2rem 0;
+          line-height: 0.6rem;
+        }
+        .iconfont {
+          color: #ddd;
+        }
+        .author {
+          margin-top: 0.3rem;
+          font-size: 0.4rem;
+          @include flex-between();
+          .avatar {
+            display: inline-block;
+            height: 0.9rem;
+            width: 0.9rem;
+            border-radius: 50%;
+            margin-right: 0.2rem;
+            & + span {
+              @include ellipsis();
+              display: inline-block;
+              line-height: 0.9rem;
+              height: 0.9rem;
+              width: 2.5rem;
+              font-size: 0.3rem;
+            }
+          }
+          .iconfont {
+            position: relative;
+            font-size: 0.5rem;
+            color: #999;
+            span {
+              position: absolute;
+              font-size: 0.3rem;
+              left: 14px;
+              background: #fff;
+              top: -0.125rem;
+            }
+          }
+        }
       }
       &::after {
         display: block;

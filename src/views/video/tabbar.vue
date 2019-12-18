@@ -19,6 +19,14 @@
     <div class="tabbar-content">
       <router-view></router-view>
     </div>
+    <me-more v-if="showMore" @click.native="back">
+      <div>
+        <div class="more">更多</div>
+        <i class="more-item iconfont icon-cha" @click="deleteThis"
+          ><span>不感兴趣</span></i
+        >
+      </div>
+    </me-more>
   </div>
 </template>
 
@@ -26,12 +34,18 @@
 import { axiosGet } from '@assets/js/query'
 import { ROUTER } from './config'
 import BScroll from 'better-scroll'
+import MeMore from '@comp/more'
 export default {
   name: 'VideoTabbar',
+  components: {
+    MeMore
+  },
   data() {
     return {
       data: [],
-      now_idx: 0
+      now_idx: 0,
+      showMore: false,
+      deleIdx: ''
     }
   },
   created() {
@@ -56,7 +70,19 @@ export default {
     },
     changeStatus(idx, typeid) {
       this.now_idx = idx
-      console.log(typeid)
+      // console.log(typeid)
+    },
+
+    moreInfo(index) {
+      console.log(index)
+      this.deleIdx = index
+      this.showMore = true
+    },
+    back() {
+      this.showMore = false
+    },
+    deleteThis() {
+      this.$children[0].deleteThis(this.deleIdx)
     }
   },
   mounted() {
@@ -79,13 +105,18 @@ export default {
 .tabbar {
   width: 100%;
   margin-top: 1rem;
-  height: 1rem;
+  height: 100%;
   // padding: 0.3rem;
   &-wrapper {
+    height: 1rem;
     width: 100%;
     border-bottom: 1px solid #eee;
   }
-
+  &-content {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1.8rem;
+  }
   &-list {
     width: 22rem;
     height: 1rem;
@@ -107,5 +138,21 @@ export default {
 }
 .item_active {
   border-bottom: 2px solid $theme;
+}
+.more {
+  display: block;
+  color: #999;
+  line-height: 1.25rem;
+  text-indent: 0.5rem;
+  border-bottom: 1px solid #dddd;
+  &-item {
+    color: #000;
+    font-size: 0.4rem;
+    line-height: 1.25rem;
+    padding-left: 0.5rem;
+    & span {
+      padding-left: 0.2rem;
+    }
+  }
 }
 </style>
