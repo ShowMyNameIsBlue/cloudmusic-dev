@@ -10,6 +10,7 @@
         <i class="iconfont icon-bofang"> 播放全部</i>
         <i class="iconfont icon-gengduo"><span> 多选</span></i>
       </div>
+      <me-loading v-if="data.length === 0"></me-loading>
       <div
         class="recommend-list "
         ref="scroll1"
@@ -42,6 +43,7 @@
 import RecommendHeader from './header'
 import { ROUTER } from './config'
 import { axiosGet } from '@assets/js/query'
+import MeLoading from '@comp/loading'
 export default {
   name: 'dayRecommend',
   data() {
@@ -102,7 +104,8 @@ export default {
   },
 
   components: {
-    RecommendHeader
+    RecommendHeader,
+    MeLoading
   }
 }
 </script>

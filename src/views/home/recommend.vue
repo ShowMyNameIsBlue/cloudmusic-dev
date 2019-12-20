@@ -1,5 +1,6 @@
 <template>
   <div class="recommend">
+    <me-loading v-if="data.length === 0"></me-loading>
     <div class="recommend-title">
       <span class="left">推荐歌单</span>
       <span class="right">歌单广场</span>
@@ -23,6 +24,7 @@
 <script>
 import { axiosGet } from '@assets/js/query'
 import { ROUTER } from './config'
+import MeLoading from '@comp/loading'
 export default {
   name: 'HomeRecommend',
   data() {
@@ -55,6 +57,9 @@ export default {
       } else if (number.length >= 5) return number.replace(/\d{4}$/g, '万')
       else return number
     }
+  },
+  components: {
+    MeLoading
   }
 }
 </script>

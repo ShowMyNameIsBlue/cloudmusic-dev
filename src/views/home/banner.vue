@@ -1,6 +1,7 @@
 <template>
   <div class="banner">
     <me-banner :data="data" :pagination="pagination">
+      <me-loading v-if="data.length === 0"></me-loading>
       <swiper-slide v-for="(item, index) in data" :key="index">
         <me-loading v-if="data.length === 0"></me-loading>
         <div class="slide">

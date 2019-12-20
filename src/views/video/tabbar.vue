@@ -66,7 +66,9 @@ export default {
       const res = await axiosGet(ROUTER.vdo_list)
       const { data } = res
       this.data = data.filter((v, i) => i < 11)
-      this.$router.push(`/video/type/${data[0].id}`).catch(err => {})
+      this.$router.push(`/video/type/${data[0].id}`).catch(err => {
+        return err
+      })
     },
     changeStatus(idx, typeid) {
       this.now_idx = idx
@@ -74,7 +76,6 @@ export default {
     },
 
     moreInfo(index) {
-      console.log(index)
       this.deleIdx = index
       this.showMore = true
     },
