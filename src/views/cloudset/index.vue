@@ -14,7 +14,7 @@ export default {
   name: 'CloudSet',
   data() {
     return {
-      content: false
+      content: true
     }
   },
   components: {

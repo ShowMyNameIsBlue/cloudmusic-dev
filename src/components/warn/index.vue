@@ -13,7 +13,8 @@ export default {
   data() {
     return {
       warn: false,
-      content: '操作不正确'
+      content: '操作不正确',
+      tt: null
     }
   },
   props: {
@@ -27,9 +28,15 @@ export default {
       this.content = msg
       const t = this
       t.warn = true
-      setTimeout(() => {
+      this.tt = setTimeout(() => {
         t.warn = false
       }, 2000)
+    },
+    hide() {
+      if (this.tt) {
+        clearTimeout(this.tt)
+        this.warn = false
+      }
     }
   }
 }

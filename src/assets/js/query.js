@@ -15,7 +15,7 @@ const axiosGet = (url, data) => {
     })
     .catch(err => {
       console.error(err)
-      alert('此接口不可用')
+      alert('此接口不可用 (服务端或网络问题)')
       window.location.href = '/'
       throw new Error(err)
     })

@@ -23,7 +23,9 @@ export const playcount = (num1, num2) => {
 
 export const duration = time => {
   let second = 0
-  if (time) second = parseInt(time.toString().replace(/\d{3}$/g, ''))
+  if (/0{3}$/g.test(time)) {
+    second = parseInt(time.toString().replace(/\d{3}$/g, ''))
+  } else second = time
   let hour = 0
   let min = 0
   if (second > 60) {

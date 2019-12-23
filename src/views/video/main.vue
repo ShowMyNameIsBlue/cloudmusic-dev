@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <me-loading v-if="data.length === 0"></me-loading>
+    <me-warn ref="warn"></me-warn>
     <me-scroll :pullUp="true" @pullUpBegin="getNewData" ref="scroll">
       <div class="main-list">
         <div class="main-list-item" v-for="(item, index) in data" :key="index">
@@ -51,6 +52,7 @@ import { axiosGet } from '@assets/js/query'
 import { ROUTER } from './config'
 import { playcount, duration } from '@assets/js/util'
 import MeLoading from '@comp/loading'
+import MeWarn from '@comp/warn'
 export default {
   name: 'VideoMain',
   data() {
@@ -72,7 +74,10 @@ export default {
       const { id } = this.$route.params
       const res = await axiosGet(ROUTER.vdo_detail, { id })
       let { datas } = res
-      // console.log(datas)
+      if (!res.hasmore) {
+        this.$refs.warn.show('此分区已无最新资源')
+      }
+
       datas = datas.filter(v => v.data.alg !== null)
       return datas
     },
@@ -106,11 +111,13 @@ export default {
   },
   components: {
     MeScroll,
-    MeLoading
+    MeLoading,
+    MeWarn
   },
   watch: {
     async $route(to) {
       if (to.fullPath.includes('/video/type') && to.params.id) {
+        this.$refs.warn.hide()
         this.data = ''
         const res = await this.getData()
         this.data = res
