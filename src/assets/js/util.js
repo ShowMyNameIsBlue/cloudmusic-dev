@@ -23,7 +23,7 @@ export const playcount = (num1, num2) => {
 
 export const duration = time => {
   let second = 0
-  if (/0{3}$/g.test(time)) {
+  if (/0{3}$/g.test(time) || time.toString().length >= 5) {
     second = parseInt(time.toString().replace(/\d{3}$/g, ''))
   } else second = time
   let hour = 0

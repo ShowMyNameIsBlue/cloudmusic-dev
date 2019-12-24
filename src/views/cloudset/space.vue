@@ -28,8 +28,14 @@
           <div class="content">
             <div class="text">{{ JSON.parse(item.json).msg }}</div>
             <div class="audio">
-              <div class="pics" v-for="(e, i) in item.pics" :key="i">
-                <img class="pic" :src="e.pcSquareUrl" alt="" />
+              <div class="pics">
+                <img
+                  class="pic"
+                  :src="e.pcSquareUrl"
+                  alt=""
+                  v-for="(e, i) in item.pics"
+                  :key="i"
+                />
               </div>
               <div class="singer" v-if="checkType(item.json) === 2">
                 <img
@@ -187,7 +193,7 @@ export default {
           position: absolute;
           left: 1.375rem;
           // @include flex-center(column);
-          align-items: flex-start;
+          // align-items: flex-start;
           .name {
             display: inline-block;
             width: 2.5rem;
@@ -231,7 +237,7 @@ export default {
         }
         .audio {
           .pics {
-            margin-top: 0.25rem;
+            // margin-top: 0.25rem;
             @include flex-between();
             flex-wrap: wrap;
             .pic {
@@ -239,6 +245,7 @@ export default {
               border-radius: 0.125rem;
               height: 3.5rem;
               width: 3.5rem;
+              margin-top: 0.125rem;
             }
           }
           .singer {

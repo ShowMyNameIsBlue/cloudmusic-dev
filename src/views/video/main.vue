@@ -116,8 +116,8 @@ export default {
   },
   watch: {
     async $route(to) {
+      this.$refs.warn.hide()
       if (to.fullPath.includes('/video/type') && to.params.id) {
-        this.$refs.warn.hide()
         this.data = ''
         const res = await this.getData()
         this.data = res

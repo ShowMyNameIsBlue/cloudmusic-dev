@@ -1,7 +1,7 @@
 <template>
   <div class="video c-content-container">
     <video-header></video-header>
-    <video-tabbar></video-tabbar>
+    <video-tabbar ref="tabbars"></video-tabbar>
   </div>
 </template>
 

@@ -54,7 +54,7 @@ export default {
   watch: {
     $route(to) {
       if (to.fullPath === '/video') {
-        this.$router.push(`/video/type/${this.data[0].id}`).catch({})
+        this.$router.push(`/video/type/${this.data[this.now_idx].id}`).catch({})
       }
     }
   },
@@ -84,6 +84,9 @@ export default {
     },
     deleteThis() {
       this.$children[0].deleteThis(this.deleIdx)
+    },
+    changeNowIdx() {
+      this.now_idx = 0
     }
   },
   mounted() {
