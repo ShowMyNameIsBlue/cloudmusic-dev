@@ -42,7 +42,7 @@
             v-for="(item, index) in createlist"
             :key="index"
           >
-            <div class="song-item-main">
+            <router-link :to="`/me/playlist/${item.id}`" class="song-item-main">
               <img :src="item.coverImgUrl" alt="" />
               <div class="main-content">
                 <div class="title">{{ item.name }}</div>
@@ -50,7 +50,7 @@
                   <span>{{ item.trackCount }} 首</span>
                 </div>
               </div>
-            </div>
+            </router-link>
           </div>
         </div>
         <div class="main-playlist-item lovelist " @click="showList(2)">
@@ -61,7 +61,7 @@
         </div>
         <div class="song " v-show="list2">
           <div class="song-item" v-for="(item, index) in lovelist" :key="index">
-            <div class="song-item-main">
+            <router-link :to="`/me/playlist/${item.id}`" class="song-item-main">
               <img :src="item.coverImgUrl" alt="" />
               <div class="main-content">
                 <div class="title">{{ item.name }}</div>
@@ -69,7 +69,7 @@
                   <span>{{ item.trackCount }} 首</span>
                 </div>
               </div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
