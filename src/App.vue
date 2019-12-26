@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="c-container">
     <div class="c-view-container">
-      <keep-alive exclude="account,playlist"> <router-view /></keep-alive>
+      <keep-alive exclude="account,playlist,song,me">
+        <router-view
+      /></keep-alive>
     </div>
     <div class="c-footer-container">
       <me-footer></me-footer>

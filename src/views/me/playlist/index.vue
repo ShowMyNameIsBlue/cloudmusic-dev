@@ -53,7 +53,19 @@
         </div>
       </div>
       <div slot="main" class="main">
-        <div class="main-item" v-for="(item, index) in data" :key="index">
+        <router-link
+          :to="{
+            path: `/song/${item.id}`,
+            query: {
+              title: item.name,
+              name: item.ar[0].name,
+              coverImg: item.al.picUrl
+            }
+          }"
+          class="main-item"
+          v-for="(item, index) in data"
+          :key="index"
+        >
           <div class="left">
             <span class="order">{{ index + 1 }}</span>
             <div class="detail">
@@ -67,7 +79,7 @@
             <i class="play iconfont icon-shipin"></i>
             <i class="more iconfont icon-msnui-more"></i>
           </div>
-        </div>
+        </router-link>
       </div>
     </me-playlist>
   </div>
@@ -96,7 +108,6 @@ export default {
       const { data, playlist } = res
       this.data = data
       this.playlist = playlist
-      console.log(data)
     },
     async getData() {
       const { id } = this.$route.params

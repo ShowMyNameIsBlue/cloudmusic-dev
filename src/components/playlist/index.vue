@@ -39,7 +39,6 @@ export default {
       this.playId = idx
     },
     scroll() {
-      console.log(this.$refs.recommend.scrollTop)
       if (this.$refs.recommend.scrollTop > 230) {
         this.isScroll = true
         this.first = true

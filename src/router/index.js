@@ -42,6 +42,14 @@ const routes = [
     }
   },
   {
+    path: '/song/:id',
+    name: 'song',
+    component: () => import('@views/song'),
+    meta: {
+      keepAlive: false // 不需要被缓存
+    }
+  },
+  {
     path: '/cloudset',
     name: 'cloudset',
     component: () => import('@views/cloudset')

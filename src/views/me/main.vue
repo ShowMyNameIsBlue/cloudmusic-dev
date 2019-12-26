@@ -37,6 +37,9 @@
           <i class="iconfont icon-msnui-more"></i>
         </div>
         <div class="song" v-show="list1">
+          <div class="loginStatus" v-if="loginStatus">
+            <div>未登录</div>
+          </div>
           <div
             class="song-item"
             v-for="(item, index) in createlist"
@@ -88,7 +91,8 @@ export default {
       list1: false,
       list2: false,
       createlist: [],
-      lovelist: []
+      lovelist: [],
+      loginStatus: false
     }
   },
   created() {
@@ -97,24 +101,33 @@ export default {
   methods: {
     async init() {
       const data = await this.getData()
-      const { createlist, lovelist } = data
-      this.createlist = createlist
-      this.lovelist = lovelist
-      console.log(data)
+      if (data) {
+        const { createlist, lovelist } = data
+        this.createlist = createlist
+        this.lovelist = lovelist
+      }
     },
     async getData() {
-      const res = await axiosGet(ROUTER.playList)
-      const { playlist } = res
-      const data = {
-        createlist: [],
-        lovelist: []
+      // 未处理未登录情况
+      if (JSON.stringify(this.$store.state.loginStatus) === '{}') {
+        this.loginStatus = true
+      } else {
+        console.log(this.$store.state.loginStatus)
+        const { userId } = this.$store.state.loginStatus.profile
+        this.loginStatus = false
+        const res = await axiosGet(ROUTER.playList, { uid: userId })
+        const { playlist } = res
+        const data = {
+          createlist: [],
+          lovelist: []
+        }
+        playlist.forEach(e => {
+          if (e.userId === userId) {
+            data.createlist.push(e)
+          } else data.lovelist.push(e)
+        })
+        return data
       }
-      playlist.forEach(e => {
-        if (e.userId === 32953014) {
-          data.createlist.push(e)
-        } else data.lovelist.push(e)
-      })
-      return data
     },
     showList(id) {
       this[`list${id}`] = !this[`list${id}`]
@@ -243,5 +256,12 @@ export default {
       }
     }
   }
+}
+.loginStatus {
+  height: 1rem;
+  font-size: 0.35rem;
+  color: #000;
+  line-height: 1rem;
+  text-indent: 0.5rem;
 }
 </style>
